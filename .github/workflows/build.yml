@@ -1,0 +1,24 @@
+name: Build
+
+on:
+  - push
+  - workflow_dispatch
+
+jobs:
+  build:
+    name: Build
+    runs-on: macos-12
+    env:
+      ATOM_DEV_RESOURCE_PATH: ${{ github.workspace }}
+      ATOM_ELECTRON_URL: https://artifacts.electronjs.org/headers/dist
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: atom/atom
+          ref: master
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "12.14.1"
+          cache: "npm"
+      - run: npm i -g npm@6.14.13
+      - run: script/bootstrap
