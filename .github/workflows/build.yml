@@ -1,8 +1,6 @@
 name: Build
 
-on:
-  - push
-  - workflow_dispatch
+on: [workflow_dispatch]
 
 jobs:
   build:
@@ -16,6 +14,10 @@ jobs:
         with:
           repository: atom/atom
           ref: master
+      - run: |
+          brew update
+          brew install python@3.8
+      - run: echo "$(brew --prefix)/opt/python@3.8/libexec/bin" >> $GITHUB_PATH
       - uses: actions/setup-node@v3
         with:
           node-version: "12.14.1"
