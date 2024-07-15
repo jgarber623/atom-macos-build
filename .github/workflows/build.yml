@@ -23,5 +23,18 @@ jobs:
           node-version: "12.14.1"
           cache: "npm"
       - run: npm i -g npm@6.14.13
+      - run: |
+          sed -i -E "s/\(1.65.0\)-dev/\1/" package.json
+          cat package.json
+      - run: |
+          git diff
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "1.65.0" || exit 0
+          git push
+          git tag "v1.65.0"
+          git push --tags
+      - run: git checkout v1.65.0
       - run: script/bootstrap
       - run: script/build --no-bootstrap
